@@ -14,36 +14,39 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.titotech.biblioteca.entities.User;
+import com.titotech.biblioteca.entities.Employee;
+import com.titotech.biblioteca.entities.dto.EmployeeDTO;
 import com.titotech.biblioteca.entities.dto.UserDTO;
-import com.titotech.biblioteca.services.UserService;
+import com.titotech.biblioteca.services.EmployeeService;
 
 @RestController
-@RequestMapping(value="/users")
-public class UserResource {
-
-    @Autowired
-    private UserService service;
+@RequestMapping(value="/employees")
+public class EmployeeResource {
     
+    @Autowired
+    private EmployeeService service;
+
+
     @GetMapping
-    public ResponseEntity<List<UserDTO>> findAlll(){
-        List<User> list = service.findAll();
-        List<UserDTO> listDto = list.stream().map(x -> new UserDTO(x)).collect((Collectors.toList()));
+    public ResponseEntity<List<EmployeeDTO>> findAlll(){
+        List<Employee> list = service.findAll();
+        List<EmployeeDTO> listDto = list.stream().map(x -> new EmployeeDTO(x)).collect((Collectors.toList()));
         return ResponseEntity.ok().body(listDto);
     }
 
     @GetMapping(value ="/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable Long id ){
-       User obj = service.findById(id);
+       Employee obj = service.findById(id);
        return ResponseEntity.ok().body(new UserDTO(obj));   
     }
 
-    @PostMapping
-    public ResponseEntity<User> insert(@RequestBody UserDTO obj){
-      UserDTO dto = new UserDTO();
-      User user = dto.fromDTO(obj);
-      user = service.insert(user);
+     @PostMapping
+    public ResponseEntity<Employee> insert(@RequestBody EmployeeDTO obj){
+      EmployeeDTO dto = new EmployeeDTO();
+      Employee emp = dto.fromDTO(obj);
+      emp = service.insert(emp);
       URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-      return ResponseEntity.created(uri).body(user);
+      return ResponseEntity.created(uri).body(emp);
     }
 }
+

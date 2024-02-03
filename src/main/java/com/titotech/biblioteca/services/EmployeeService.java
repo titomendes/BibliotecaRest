@@ -6,28 +6,26 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.titotech.biblioteca.entities.User;
-import com.titotech.biblioteca.repositories.UserRepository;
+import com.titotech.biblioteca.entities.Employee;
+import com.titotech.biblioteca.repositories.EmployeeRepository;
 import com.titotech.biblioteca.services.exceptions.ObjectNotFound;
 
- @Service
-public class UserService {
+@Service
+public class EmployeeService {
 
-    @Autowired
-    UserRepository repo;
+     @Autowired
+     EmployeeRepository repo;
 
-    public List<User> findAll(){
+    public List<Employee> findAll(){
         return repo.findAll();
     }
 
-    public User findById(Long id){ 
-        Optional<User> obj = repo.findById(id);
+    public Employee findById(Long id){ 
+        Optional<Employee> obj = repo.findById(id);
         return obj.orElseThrow(()-> new ObjectNotFound("Object not found"));
     }
     
-    public User insert(User obj){
+    public Employee insert(Employee obj){
         return repo.save(obj);
     }
-
-   
 }
