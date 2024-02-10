@@ -17,7 +17,7 @@ import com.titotech.biblioteca.entities.Author;
 import com.titotech.biblioteca.services.AuthorService;
 
 @RestController
-@RequestMapping(value=" Authors")
+@RequestMapping(value="/authors")
 public class AuthorResource {
 
     @Autowired
@@ -26,22 +26,20 @@ public class AuthorResource {
     @GetMapping
     public ResponseEntity<List<Author>> findAlll(){
         List<Author> list = service.findAll();
-       
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value ="/{id}")
     public ResponseEntity<Author> findById(@PathVariable Long id ){
-       Author obj = service.findById(id);
-       return ResponseEntity.ok().body(obj);   
+        Author obj = service.findById(id);
+        return ResponseEntity.ok().body(obj);   
     }
 
     @PostMapping
     public ResponseEntity<Author> insert(@RequestBody Author obj){
-    
-     Author author = new Author(obj.getId(),obj.getName());
-     author = service.insert(author);
-      URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-      return ResponseEntity.created(uri).body(author);
+        Author author = new Author(obj.getId(),obj.getName());
+        author = service.insert(author);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+        return ResponseEntity.created(uri).body(author);
     }
 }

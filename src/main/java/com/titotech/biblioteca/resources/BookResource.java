@@ -26,22 +26,24 @@ public class BookResource {
     @GetMapping
     public ResponseEntity<List<Book>> findAlll(){
         List<Book> list = service.findAll();
-       
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value ="/{id}")
     public ResponseEntity<Book> findById(@PathVariable Long id ){
-       Book obj = service.findById(id);
-       return ResponseEntity.ok().body(obj);   
+        Book obj = service.findById(id);
+        return ResponseEntity.ok().body(obj);
     }
 
     @PostMapping
     public ResponseEntity<Book> insert(@RequestBody Book obj){
-    
-     Book book = new Book(obj.getId(),obj.getTitle());
-     book = service.insert(book);
-      URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-      return ResponseEntity.created(uri).body(book);
+        Book book = new Book(obj.getId(),obj.getTitle(),obj.getAuthors());
+        book = service.insert(book);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+        return ResponseEntity.created(uri).body(book);
     }
+
+   
+    
+    
 }

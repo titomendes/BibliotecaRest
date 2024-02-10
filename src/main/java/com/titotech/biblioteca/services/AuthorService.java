@@ -24,6 +24,11 @@ public class AuthorService {
         Optional<Author> obj = repo.findById(id);
         return obj.orElseThrow(()-> new ObjectNotFound("Object not found"));
     }
+
+    public Author findByName(String name){
+        Optional<Author> obj = repo.findByName(name);
+        return obj.orElseThrow(()-> new ObjectNotFound("Object not found"));
+    }
     
     public Author insert(Author obj){
         return repo.save(obj);
