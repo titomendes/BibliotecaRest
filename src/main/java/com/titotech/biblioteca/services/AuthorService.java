@@ -8,13 +8,14 @@ import org.springframework.stereotype.Service;
 
 import com.titotech.biblioteca.entities.Author;
 import com.titotech.biblioteca.repositories.AuthorRepository;
+import com.titotech.biblioteca.services.exceptions.AuthorAlreadyExistsException;
 import com.titotech.biblioteca.services.exceptions.ObjectNotFound;
 
 @Service
 public class AuthorService {
 
-   @Autowired
-     AuthorRepository repo;
+    @Autowired
+    AuthorRepository repo;
 
     public List<Author> findAll(){
         return repo.findAll();
@@ -25,12 +26,16 @@ public class AuthorService {
         return obj.orElseThrow(()-> new ObjectNotFound("Object not found"));
     }
 
-    public Author findByName(String name){
-        Optional<Author> obj = repo.findByName(name);
-        return obj.orElseThrow(()-> new ObjectNotFound("Object not found"));
+    public Author findByFirstNameAndLastName(String firstName, String lastName){
+        Optional<Author> obj = repo.findByFirstNameAndLastName(firstName,lastName);
+        return obj.orElse(null);
     }
     
     public Author insert(Author obj){
+        Optional<Author> author = repo.findByFirstNameAndLastName(obj.getFirstName(), obj.getLastName());
+        if(author.isPresent()){
+            throw new AuthorAlreadyExistsException("Author with the name "+ obj.getFirstName()+ " "+ obj.getLastName()+" already exists");
+        }
         return repo.save(obj);
     }
     

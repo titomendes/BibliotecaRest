@@ -47,10 +47,6 @@ public class Book implements Serializable {
     inverseJoinColumns = @JoinColumn(name = "author_id"))
     private Set<Author> authors = new HashSet<>();
 
-   /* public Book(Long id, String title) {
-        this.id = id;
-        this.title = title;
-    }*/
 
    // public void addAuthor(Auhtor)
         

@@ -32,14 +32,20 @@ public class AuthorResource {
     @GetMapping(value ="/{id}")
     public ResponseEntity<Author> findById(@PathVariable Long id ){
         Author obj = service.findById(id);
-        return ResponseEntity.ok().body(obj);   
+        return ResponseEntity.ok().body(obj);
     }
 
     @PostMapping
     public ResponseEntity<Author> insert(@RequestBody Author obj){
-        Author author = new Author(obj.getId(),obj.getName());
+        Author author = new Author(obj.getId(),obj.getFirstName(),obj.getLastName());
         author = service.insert(author);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).body(author);
     }
+
+    /*@GetMapping(value ="/search")
+    public ResponseEntity<Author> findByFirstNameAndLastName(@RequestParam String firstName, @RequestParam String lastName ){
+        Author obj = service.findByFirstNameAndLastName(firstName,lastName);
+        return ResponseEntity.ok().body(obj);
+    }*/
 }

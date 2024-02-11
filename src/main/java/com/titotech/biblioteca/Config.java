@@ -40,12 +40,13 @@ public class Config implements CommandLineRunner {
         Employee emp4 = new Employee(null, "employee4Username", "employee4email@example.com", "Quality Assurance");
         Employee emp5 = new Employee(null, "employee5Username", "employee5email@example.com", "Human Resources");
         
-        Author aut1 = new Author(null, "Author Name 1");
-        Author aut2 = new Author(null, "Author Name 2");
-        Author aut3 = new Author(null, "Author Name 3");
-        Author aut4 = new Author(null, "Author Name 4");
-        Author aut5 = new Author(null, "Author Name 5");
-
+        
+        Author aut1 = new Author(null, "John", "Doe");
+        Author aut2 = new Author(null, "Jane", "Doe");
+        Author aut3 = new Author(null, "William", "Shakespeare");
+        Author aut4 = new Author(null, "Virginia", "Woolf");
+        Author aut5 = new Author(null, "Mark", "Twain");
+        
         userRepository.saveAll(Arrays.asList(user1,user2,user3,user4,user5));
         employeeRepository.saveAll(Arrays.asList(emp1,emp2,emp3,emp4,emp5));
         authorRepository.saveAll((Arrays.asList(aut1,aut2,aut3,aut4,aut5)));

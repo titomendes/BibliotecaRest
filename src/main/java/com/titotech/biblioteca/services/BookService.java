@@ -1,7 +1,9 @@
 package com.titotech.biblioteca.services;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,8 @@ import com.titotech.biblioteca.entities.Author;
 import com.titotech.biblioteca.entities.Book;
 import com.titotech.biblioteca.repositories.BookRepository;
 import com.titotech.biblioteca.services.exceptions.ObjectNotFound;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class BookService {
@@ -29,10 +33,18 @@ public class BookService {
         return obj.orElseThrow(()-> new ObjectNotFound("Object not found"));
     }
     
-    public Book insert(Book obj){//procurar se o autor aj existe pelo nome
-        for (Author x : obj.getAuthors()){
-            authorService.insert(x);
+    @Transactional
+    public Book insert(Book obj){
+        Set<Author> updatedAuthors = new HashSet<>();
+
+        for (Author incomingAuthor : obj.getAuthors()){
+            Author author = authorService.findByFirstNameAndLastName(incomingAuthor.getFirstName(),incomingAuthor.getLastName());
+            if(author==null){
+                author= authorService.insert(incomingAuthor);
+            }
+            updatedAuthors.add(author);
         }
-        return repo.save(obj);
+            obj.setAuthors(updatedAuthors);
+            return repo.save(obj);
     }
 }
