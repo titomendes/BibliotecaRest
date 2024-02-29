@@ -15,9 +15,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
-@Inheritance(strategy = InheritanceType.JOINED)
 @Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name="tb_user")
 @Getter
 @Setter
@@ -28,7 +27,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
         
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String userName;
    // private String password; // encriptar depois com o Spring security

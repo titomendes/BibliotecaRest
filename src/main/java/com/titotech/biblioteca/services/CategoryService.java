@@ -13,20 +13,26 @@ import com.titotech.biblioteca.services.exceptions.ObjectNotFound;
 @Service
 public class CategoryService {
 
-   @Autowired
-     CategoryRepository repo;
+    @Autowired
+    CategoryRepository repo;
 
     public List<Category> findAll(){
         return repo.findAll();
     }
 
-    public Category findById(Long id){ 
+    public Category findById(Long id){
         Optional<Category> obj = repo.findById(id);
         return obj.orElseThrow(()-> new ObjectNotFound("Object not found"));
     }
     
     public Category insert(Category obj){
         return repo.save(obj);
+    }
+
+    public Category findByName(String name)
+    {
+        Optional<Category> obj = repo.findByName(name);
+        return obj.orElse(null);
     }
     
 }

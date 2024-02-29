@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.titotech.biblioteca.services.exceptions.AuthorAlreadyExistsException;
+import com.titotech.biblioteca.services.exceptions.ObjectAlreadyExistsException;
 import com.titotech.biblioteca.services.exceptions.ObjectNotFound;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,10 +20,10 @@ public class ResourceExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
 
-    @ExceptionHandler(AuthorAlreadyExistsException.class)
-    public ResponseEntity<StandardError> authorAlreadyExists(AuthorAlreadyExistsException e, HttpServletRequest  request){
-        HttpStatus status = HttpStatus.FOUND;
-        StandardError err = new StandardError(System.currentTimeMillis(),status.value(),"Author already exists",e.getMessage(),request.getRequestURI());
+    @ExceptionHandler(ObjectAlreadyExistsException.class)
+    public ResponseEntity<StandardError> authorAlreadyExists(ObjectAlreadyExistsException e, HttpServletRequest  request){
+        HttpStatus status = HttpStatus.CONFLICT;
+        StandardError err = new StandardError(System.currentTimeMillis(),status.value(),"Object already exists",e.getMessage(),request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
 

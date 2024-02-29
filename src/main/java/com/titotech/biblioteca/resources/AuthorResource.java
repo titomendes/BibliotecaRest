@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.titotech.biblioteca.entities.Author;
+import com.titotech.biblioteca.entities.dto.AuthorDTO;
 import com.titotech.biblioteca.services.AuthorService;
 
 @RestController
@@ -43,9 +45,16 @@ public class AuthorResource {
         return ResponseEntity.created(uri).body(author);
     }
 
-    /*@GetMapping(value ="/search")
-    public ResponseEntity<Author> findByFirstNameAndLastName(@RequestParam String firstName, @RequestParam String lastName ){
+    @GetMapping(value ="/search")
+    public ResponseEntity<Author> findByFirstNameAndLastName( @RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
         Author obj = service.findByFirstNameAndLastName(firstName,lastName);
         return ResponseEntity.ok().body(obj);
-    }*/
+    }
+
+    @GetMapping(value="/bookAuthor")
+    public ResponseEntity<AuthorDTO> returnBooksByAuthor( @RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
+        Author author = service.findByFirstNameAndLastName(firstName, lastName);
+        return ResponseEntity.ok().body(new AuthorDTO(author));
+    }
+    
 }

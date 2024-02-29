@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -37,13 +38,17 @@ public class BookResource {
 
     @PostMapping
     public ResponseEntity<Book> insert(@RequestBody Book obj){
-        Book book = new Book(obj.getId(),obj.getTitle(),obj.getAuthors());
+        Book book = new Book(obj.getId(),obj.getTitle(),obj.getCategories(),obj.getAuthors());
         book = service.insert(book);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).body(book);
     }
 
-   
+    @GetMapping(value ="/search")
+    public ResponseEntity<Book> findByTitle( @RequestParam("title") String title) {
+        Book obj = service.findByTitle(title);
+        return ResponseEntity.ok().body(obj);
+    }
     
     
 }

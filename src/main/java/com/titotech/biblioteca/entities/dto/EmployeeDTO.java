@@ -1,7 +1,5 @@
 package com.titotech.biblioteca.entities.dto;
 
-import java.io.Serializable;
-
 import com.titotech.biblioteca.entities.Employee;
 
 import lombok.Getter;
@@ -11,8 +9,8 @@ import lombok.Setter;
  @Getter
  @Setter
  @NoArgsConstructor
-public class EmployeeDTO extends UserDTO implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class EmployeeDTO extends UserDTO{
+   
     
     private String jobTitle;
 

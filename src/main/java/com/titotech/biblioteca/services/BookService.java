@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 import com.titotech.biblioteca.entities.Author;
 import com.titotech.biblioteca.entities.Book;
+import com.titotech.biblioteca.entities.Category;
 import com.titotech.biblioteca.repositories.BookRepository;
+import com.titotech.biblioteca.services.exceptions.ObjectAlreadyExistsException;
 import com.titotech.biblioteca.services.exceptions.ObjectNotFound;
 
 import jakarta.transaction.Transactional;
@@ -24,6 +26,9 @@ public class BookService {
     @Autowired
     AuthorService authorService;
 
+    @Autowired
+    CategoryService categoryService;
+
     public List<Book> findAll(){
         return repo.findAll();
     }
@@ -32,10 +37,21 @@ public class BookService {
         Optional<Book> obj = repo.findById(id);
         return obj.orElseThrow(()-> new ObjectNotFound("Object not found"));
     }
+
+    public Book findByTitle(String title){
+        Optional<Book> obj = repo.findByTitle(title);
+        return obj.orElse(null);
+    }
     
     @Transactional
     public Book insert(Book obj){
         Set<Author> updatedAuthors = new HashSet<>();
+        Set<Category> updatedCategories = new HashSet<>();
+
+        Optional<Book> book = repo.findByTitle(obj.getTitle());
+        if(book.isPresent()){
+            throw new ObjectAlreadyExistsException("Book with the name "+ obj.getTitle() + " already exists");
+        }
 
         for (Author incomingAuthor : obj.getAuthors()){
             Author author = authorService.findByFirstNameAndLastName(incomingAuthor.getFirstName(),incomingAuthor.getLastName());
@@ -44,6 +60,16 @@ public class BookService {
             }
             updatedAuthors.add(author);
         }
+
+        for ( Category incomingCategory : obj.getCategories()){
+            Category category = categoryService.findByName(incomingCategory.getName());
+            if(category==null){
+                category= categoryService.insert(incomingCategory);
+            }
+            updatedCategories.add(category);
+        }
+
+            obj.setCategories(updatedCategories);
             obj.setAuthors(updatedAuthors);
             return repo.save(obj);
     }

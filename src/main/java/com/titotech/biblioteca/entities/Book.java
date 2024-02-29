@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -34,12 +36,16 @@ public class Book implements Serializable {
     @Setter
     private String title;
     
-  /*  @Getter
+
+   // @JsonIgnore
+    @Getter
+    @Setter
     @ManyToMany
     @JoinTable(name= "tb_book_category", joinColumns = @JoinColumn(name = "book_id" ),
     inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> categories = new HashSet<>();*/
+    private Set<Category> categories = new HashSet<>();
     
+    @JsonIgnore
     @Getter
     @Setter
     @ManyToMany
@@ -47,8 +53,23 @@ public class Book implements Serializable {
     inverseJoinColumns = @JoinColumn(name = "author_id"))
     private Set<Author> authors = new HashSet<>();
 
+    //metodo para apagar, é so para testar no config
+    public Book(Long id, String title){
+      this.id=id;
+      this.title=title;
+    }
 
-   // public void addAuthor(Auhtor)
+
+    //metodo usado no config
+    public void addAuthor(Author obj){
+      authors.add(obj);
+    }
+
+    public void addCategory(Category obj){
+      categories.add(obj);
+    }
+
+    
         
 
 

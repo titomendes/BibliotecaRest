@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.titotech.biblioteca.entities.Category;
+import com.titotech.biblioteca.entities.dto.CategoryDTO;
 import com.titotech.biblioteca.services.CategoryService;
 
 @RestController
@@ -32,7 +34,7 @@ public class CategoryResource {
     @GetMapping(value ="/{id}")
     public ResponseEntity<Category> findById(@PathVariable Long id ){
         Category obj = service.findById(id);
-        return ResponseEntity.ok().body(obj);   
+        return ResponseEntity.ok().body(obj);
     }
 
     @PostMapping
@@ -42,4 +44,18 @@ public class CategoryResource {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).body(Category);
     }
+
+    @GetMapping(value ="/categoryBooks")
+    public ResponseEntity<CategoryDTO> returnBooksByCategory(@RequestParam("name") String name){
+        Category category = service.findByName(name);
+        return ResponseEntity.ok().body(new CategoryDTO(category));
+    }
+
+    @GetMapping(value ="/categoryBook")
+    public ResponseEntity<CategoryDTO> returnCategory(@RequestParam("name") String name){
+        Category category = service.findByName(name);
+        return ResponseEntity.ok().body(new CategoryDTO(category));
+    }
 }
+    
+
