@@ -29,5 +29,14 @@ public class UserService {
         return repo.save(obj);
     }
 
-   
+    public User update (Long id, User obj){
+        User user = repo.getReferenceById(id);
+        updateData(user,obj);
+        return repo.save(user);
+    }
+
+    private void updateData(User user, User obj) {
+        user.setUserName(obj.getUserName());
+        user.setEmail(obj.getEmail());
+    }
 }

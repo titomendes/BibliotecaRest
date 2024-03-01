@@ -50,12 +50,6 @@ public class CategoryResource {
         Category category = service.findByName(name);
         return ResponseEntity.ok().body(new CategoryDTO(category));
     }
-
-    @GetMapping(value ="/categoryBook")
-    public ResponseEntity<CategoryDTO> returnCategory(@RequestParam("name") String name){
-        Category category = service.findByName(name);
-        return ResponseEntity.ok().body(new CategoryDTO(category));
-    }
 }
     
 
